@@ -69,9 +69,9 @@ class ArticlePreview extends HTMLElement {
                 --Light-Grayish-Blue: hsl(210, 46%, 95%);
                 
                 /* Tipografía */
-                --Manrope: 'Manrope', sans-serif;
                 --Font-weight-500: 500;
                 --Font-weight-700: 700;
+                font-family: 'Manrope', sans-serif;
             }
             *,
             *::before,
@@ -80,6 +80,7 @@ class ArticlePreview extends HTMLElement {
                 margin: 0;
                 padding: 0;
                 border: 0;
+                font: inherit;
                 font-size: 100%;
                 vertical-align: baseline;
             }
@@ -87,12 +88,12 @@ class ArticlePreview extends HTMLElement {
                 display: grid;
                 grid-template-columns: max(295px) minmax(0, 428px);
                 grid-template-areas:
-                    "portada article-content"
-                    "portada author-info";
+                "portada article-content"
+                "portada author-info";
                 background-color: white;
                 gap: 1.75rem 0;
                 border-radius: 8px;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);   
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             }
             .portada {
                 grid-area: portada;  
@@ -111,11 +112,13 @@ class ArticlePreview extends HTMLElement {
             }
             .title {
             font-size: 1.25rem;
+            font-weight: var(--Font-weight-700);
             margin-bottom: 1.5rem;
+            color: var(--Very-Dark-Grayish-Blue);
             }
             .content {
-            font-size: 0.875rem;
-            color: #555;
+            font-size: 0.815rem;
+            color: var(--Desaturated-Dark-Blue);
             }
             .author-info {
                 grid-area: author-info;
@@ -162,6 +165,9 @@ class ArticlePreview extends HTMLElement {
                 cursor: pointer;
                 transition: background-color 0.3s ease;
             }
+            .share.is_active {
+                background-color: var(--Desaturated-Dark-Blue);
+            }
             .share svg {
                 inline-size: 100%;
                 block-size: 100%;
@@ -169,18 +175,46 @@ class ArticlePreview extends HTMLElement {
             .share svg path {
                 fill: #6E8098;
             }
-            .dialog-share {
+            .dialog-share[open] {
                 position: absolute;
-                inline-size: 10rem;
-                block-size: 1rem;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 0.938rem;
+                padding: 0.75rem 1.5rem;
+                border-radius: 0.5rem;
+                color: var(--Grayish-Blue);
+                background-color: var(--Very-Dark-Grayish-Blue);
+                inset-inline: 65.5%;
+                inset-block: -85%;
+            }
+            .dialog-share:focus-visible {
+                outline: none;
             }
             .dialog-share::before {
-                content:" ";
+                content:"";
                 position: absolute;
-                width: 40px;
-                height: 40px;
-                background-color: red;
-                z-index: 999;
+                bottom: -18px;
+                width: 20px;
+                height: 20px;
+                clip-path: polygon(100% 0, 0% 0%, 50% 70%);
+                background-color: var(--Very-Dark-Grayish-Blue);
+            }
+            .dialog-share p {
+                letter-spacing: 0.25rem;
+                font-size: 0.875rem;
+            }
+            .social-media {
+                display: flex;
+                gap: 0.75rem;    
+            }
+            .social-media a:focus-visible {
+                outline: none;
+            }
+            .social-media a img {
+                display: block;
+                block-size: 100%;
+                transition: transform 0.3s ease;
             }
             @media screen and (max-width: 767px) {
                 .article-preview {
@@ -235,12 +269,31 @@ class ArticlePreview extends HTMLElement {
                 <span class="share">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 15""><path d="M15 6.495L8.766.014V3.88H7.441C3.33 3.88 0 7.039 0 10.936v2.049l.589-.612C2.59 10.294 5.422 9.11 8.39 9.11h.375v3.867L15 6.495z"/></svg>
                 </span>
-                <dialog class="dialog-share"></dialog>
+                <dialog class="dialog-share">
+                    <p>SHARE</p>
+                    <nav class="social-media">
+                        <a href="https://web.facebook.com" target="_black"><img src="./images/icon-facebook.svg" alt="Facebook Icon"></a>
+                        <a href="https://x.com/?lang=es" target="_black"><img src="./images/icon-twitter.svg" alt="Twitter icon"></a>
+                        <a href="https://es.pinterest.com" target="_black"><img src="./images/icon-pinterest.svg" alt="Pinterest Icon"></a>
+                    </nav>
+                </dialog>
             </footer>
         </article>
         `;
-    }    
-}
+        this.shadowRoot.querySelector('.share').addEventListener('click', () => {
+            const dialog = this.shadowRoot.querySelector('.dialog-share');
+            if (!dialog.open) {
+                dialog.show();
+                this.shadowRoot.querySelector('.share').classList.add('is_active');
+                this.shadowRoot.querySelector('.share svg path').style.fill = '#fff';
+            } else {
+                dialog.close();
+                this.shadowRoot.querySelector('.share').classList.remove('is_active');
+                this.shadowRoot.querySelector('.share svg path').style.fill = '#6E8098';
+            }
+        });
+    };    
+};
 
 customElements.define('article-preview', ArticlePreview);
 
