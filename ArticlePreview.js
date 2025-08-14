@@ -89,15 +89,13 @@ class ArticlePreview extends HTMLElement {
                 grid-template-areas:
                     "portada article-content"
                     "portada author-info";
-
                 background-color: white;
                 gap: 1.75rem 0;
                 border-radius: 8px;
                 box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);   
             }
             .portada {
-                grid-area: portada;
-            
+                grid-area: portada;  
             }
             .portada img {
                 inline-size: 100%;
@@ -125,6 +123,7 @@ class ArticlePreview extends HTMLElement {
                 align-items: center;
                 gap: 1rem;
                 padding: 0 1.75rem 1.75rem;
+                position: relative;
             }
             .perfil {
                 inline-size: 2.5rem;
@@ -163,10 +162,54 @@ class ArticlePreview extends HTMLElement {
                 cursor: pointer;
                 transition: background-color 0.3s ease;
             }
-            .share img {
+            .share svg {
                 inline-size: 100%;
                 block-size: 100%;
-                object-fit: cover;
+            }
+            .share svg path {
+                fill: #6E8098;
+            }
+            .dialog-share {
+                position: absolute;
+                inline-size: 10rem;
+                block-size: 1rem;
+            }
+            .dialog-share::before {
+                content:" ";
+                position: absolute;
+                width: 40px;
+                height: 40px;
+                background-color: red;
+                z-index: 999;
+            }
+            @media screen and (max-width: 767px) {
+                .article-preview {
+                    grid-template-columns: minmax(0, 428px);
+                    grid-template-areas:
+                        "portada "
+                        "article-content"
+                        "author-info";
+                    margin: 0 1.25rem;
+                    gap: 1rem 0;
+                }
+                .portada {
+                    block-size: 280px;  
+                }
+                .portada img {
+                    object-position: top;
+                    border-radius: 8px 8px 0 0;
+                }
+            }
+            @media screen and (max-width: 425px) {
+                .article-preview {
+                    gap: 0.75rem 0;
+                }
+                .portada {
+                    block-size: 220px;  
+                }
+                .portada img {
+                    border-radius: 8px 8px 0 0;
+                }
             }
         </style>
         <article class="article-preview">
@@ -190,8 +233,9 @@ class ArticlePreview extends HTMLElement {
                     })}</p>
                 </div>
                 <span class="share">
-                    <img src="./images/icon-share.svg" alt="Share Icon" />
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 15""><path d="M15 6.495L8.766.014V3.88H7.441C3.33 3.88 0 7.039 0 10.936v2.049l.589-.612C2.59 10.294 5.422 9.11 8.39 9.11h.375v3.867L15 6.495z"/></svg>
                 </span>
+                <dialog class="dialog-share"></dialog>
             </footer>
         </article>
         `;
