@@ -125,7 +125,7 @@ class ArticlePreview extends HTMLElement {
                 display: flex;
                 align-items: center;
                 gap: 1rem;
-                padding: 0 1.75rem 1.75rem;
+                padding: 0 1.75rem 1.5rem;
                 position: relative;
             }
             .perfil {
@@ -164,6 +164,7 @@ class ArticlePreview extends HTMLElement {
                 block-size: 1.75rem;
                 cursor: pointer;
                 transition: background-color 0.3s ease;
+                z-index: 1;
             }
             .share.is_active {
                 background-color: var(--Desaturated-Dark-Blue);
@@ -181,7 +182,7 @@ class ArticlePreview extends HTMLElement {
                 justify-content: center;
                 align-items: center;
                 gap: 0.938rem;
-                padding: 0.75rem 1.5rem;
+                padding: 0.75rem 1.75rem;
                 border-radius: 0.5rem;
                 color: var(--Grayish-Blue);
                 background-color: var(--Very-Dark-Grayish-Blue);
@@ -224,7 +225,7 @@ class ArticlePreview extends HTMLElement {
                         "article-content"
                         "author-info";
                     margin: 0 1.25rem;
-                    gap: 1rem 0;
+                    gap: 0;
                 }
                 .portada {
                     block-size: 280px;  
@@ -233,11 +234,26 @@ class ArticlePreview extends HTMLElement {
                     object-position: top;
                     border-radius: 8px 8px 0 0;
                 }
+                .article-content {
+                    padding: 1.75rem 1.75rem 0.923rem;
+                }
+                .author-info {
+                    padding: 1rem 1.75rem;
+                }
+                .dialog-share[open] {
+                    justify-content: left;
+                    inline-size: 100%;
+                    block-size: 100%;
+                    inset-inline: 0;
+                    inset-block: 0;
+                    border-radius: 0 0 8px 8px;
+                    transition: inset-inline 5s ease, inset-block 5s ease;
+                }
+                .dialog-share::before {
+                    display: none;
+                }
             }
             @media screen and (max-width: 425px) {
-                .article-preview {
-                    gap: 0.75rem 0;
-                }
                 .portada {
                     block-size: 220px;  
                 }
@@ -318,5 +334,6 @@ preview.datos = {
     titulo: "Shift the overall look and feel by adding these wonderful touches to furniture in your home",
     perfil: "./images/avatar-michelle.jpg"
 };
+preview.textContent = 'lamcjosndijsncaspkasoio';
 
 console.log(preview.titulo) */
